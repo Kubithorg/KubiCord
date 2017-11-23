@@ -1,0 +1,34 @@
+group 'fr.pelt10.kubithon'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        name 'bungeecord-repo'
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+configurations {
+    bundle {}
+    compile.extendsFrom bundle
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    bundle 'redis.clients:jedis:2.9.0'
+    implementation 'net.md-5:bungeecord-api:1.12-SNAPSHOT'
+}
+
+jar {
+    def bundled = configurations.bundle.collect { it.isDirectory() ? it : zipTree(it) }
+    from(bundled) {
+        exclude {
+            it.file.name == "plugin.yml" || it.file.name == "config.yml" || it.file.name == "bungee.yml"
+        }
+    }
+}
