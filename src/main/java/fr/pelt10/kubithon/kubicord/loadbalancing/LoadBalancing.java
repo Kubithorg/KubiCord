@@ -1,6 +1,8 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing;
 
 import fr.pelt10.kubithon.kubicord.KubiCord;
+import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubInstance;
+import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubPubSub;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
 
 import java.util.LinkedList;
@@ -8,7 +10,7 @@ import java.util.logging.Logger;
 
 public class LoadBalancing {
     private static LinkedList<HubInstance> hubList = new LinkedList<>();
-    private static int RoundRobin = 0;
+    private static int roundRobin = 0;
     private static HubPubSub hubPubSub;
 
     public LoadBalancing(KubiCord kubiCord) {

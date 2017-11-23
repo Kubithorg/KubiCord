@@ -1,6 +1,7 @@
-package fr.pelt10.kubithon.kubicord.loadbalancing;
+package fr.pelt10.kubithon.kubicord.loadbalancing.hub;
 
 import fr.pelt10.kubithon.kubicord.KubiCord;
+import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubInstance;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
 import redis.clients.jedis.JedisPubSub;
 

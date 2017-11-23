@@ -1,4 +1,4 @@
-package fr.pelt10.kubithon.kubicord.loadbalancing;
+package fr.pelt10.kubithon.kubicord.loadbalancing.hub;
 
 import com.google.gson.Gson;
 import lombok.Getter;
