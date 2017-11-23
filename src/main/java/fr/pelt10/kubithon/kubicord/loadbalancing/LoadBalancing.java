@@ -4,8 +4,10 @@ import fr.pelt10.kubithon.kubicord.KubiCord;
 import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubInstance;
 import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubPubSub;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
+import net.md_5.bungee.api.config.ServerInfo;
 
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class LoadBalancing {
@@ -30,5 +32,16 @@ public class LoadBalancing {
             hubPubSub = new HubPubSub(kubiCord, hubList);
             new Thread(hubPubSub).start();
         }
+
+        kubiCord.getProxy().getPluginManager().registerListener(kubiCord, new PlayerAskHubEvent(this));
+    }
+
+    public Optional<ServerInfo> nextHub() {
+        if(roundRobin+1 >= hubList.size()) {
+            roundRobin = 0;
+        } else {
+            roundRobin++;
+        }
+        return Optional.of(hubList.size() == 0 ? null : hubList.get(roundRobin).getAsServerInfo());
     }
 }

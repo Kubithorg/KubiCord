@@ -2,6 +2,10 @@ package fr.pelt10.kubithon.kubicord.loadbalancing.hub;
 
 import com.google.gson.Gson;
 import lombok.Getter;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
+
+import java.net.InetSocketAddress;
 
 public class HubInstance {
     private static Gson gson = new Gson();
@@ -16,6 +20,10 @@ public class HubInstance {
         this.HubID = HubID;
         this.ip = ip;
         this.port = port;
+    }
+
+    public ServerInfo getAsServerInfo() {
+        return ProxyServer.getInstance().constructServerInfo(getHubID(), new InetSocketAddress(ip, port), "Hub generate by KubiCord", false);
     }
 
     public static String serialize(HubInstance hubInstance) {
