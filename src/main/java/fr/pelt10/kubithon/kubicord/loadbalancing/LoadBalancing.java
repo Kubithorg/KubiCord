@@ -37,11 +37,11 @@ public class LoadBalancing {
     }
 
     public Optional<ServerInfo> nextHub() {
-        if(roundRobin+1 >= hubList.size()) {
+        roundRobin++;
+        if(roundRobin >= hubList.size()) {
             roundRobin = 0;
-        } else {
-            roundRobin++;
         }
+
         return Optional.of(hubList.size() == 0 ? null : hubList.get(roundRobin).getAsServerInfo());
     }
 }
