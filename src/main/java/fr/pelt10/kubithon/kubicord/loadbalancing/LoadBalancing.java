@@ -1,7 +1,7 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing;
 
 import fr.pelt10.kubithon.kubicord.KubiCord;
-import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubInstance;
+import fr.pelt10.kubithon.kubicord.utils.ServerInstance;
 import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubPubSub;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class LoadBalancing {
-    private static LinkedList<HubInstance> hubList = new LinkedList<>();
+    private static LinkedList<ServerInstance> hubList = new LinkedList<>();
     private static int roundRobin = 0;
     private static HubPubSub hubPubSub;
 
@@ -22,7 +22,7 @@ public class LoadBalancing {
             jedis.select(RedisKeys.HUB_DB_ID);
             jedis.ping();
             logger.info("Loading Started Hub...");
-            jedis.hgetAll(RedisKeys.HUB_KEY_NAME).values().stream().map(HubInstance::deserialize).forEach(hubInstance -> {
+            jedis.hgetAll(RedisKeys.HUB_KEY_NAME).values().stream().map(ServerInstance::deserialize).forEach(hubInstance -> {
                 hubList.add(hubInstance);
                 logger.info(" - " + hubInstance.getHubID() + " load.");
             });

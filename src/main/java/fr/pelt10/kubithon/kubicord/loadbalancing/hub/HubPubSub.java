@@ -1,7 +1,7 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing.hub;
 
 import fr.pelt10.kubithon.kubicord.KubiCord;
-import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubInstance;
+import fr.pelt10.kubithon.kubicord.utils.ServerInstance;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
 import redis.clients.jedis.JedisPubSub;
 
@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 public class HubPubSub extends JedisPubSub implements Runnable {
     private KubiCord kubiCord;
-    private List<HubInstance> hubInstanceList;
+    private List<ServerInstance> hubInstanceList;
     private Logger logger;
     private boolean run = true;
 
-    public HubPubSub(KubiCord kubiCord, List<HubInstance> hubInstanceList) {
+    public HubPubSub(KubiCord kubiCord, List<ServerInstance> hubInstanceList) {
         this.kubiCord = kubiCord;
         this.hubInstanceList = hubInstanceList;
         this.logger = kubiCord.getLogger();
@@ -38,7 +38,7 @@ public class HubPubSub extends JedisPubSub implements Runnable {
 
         switch (command) {
             case RedisKeys.PUBSUB_CMD_NEW_HUB:
-                HubInstance hubInstance = HubInstance.deserialize(args[0]);
+                ServerInstance hubInstance = ServerInstance.deserialize(args[0]);
                 hubInstanceList.add(hubInstance);
                 logger.info("New Hub add : " + hubInstance.getHubID());
                 break;
