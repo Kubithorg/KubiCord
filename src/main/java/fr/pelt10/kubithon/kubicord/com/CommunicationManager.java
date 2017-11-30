@@ -9,7 +9,7 @@ public class CommunicationManager {
     private List<CommunicationMessage> messages = new ArrayList<>();
 
     public CommunicationManager(KubiCord kubiCord) {
-        new MessagesPubSub(kubiCord.getJedisUtils(), this);
+        new Thread(new MessagesPubSub(kubiCord.getJedisUtils(), this)).start();
     }
 
     public void registerMessage(CommunicationMessage message) {

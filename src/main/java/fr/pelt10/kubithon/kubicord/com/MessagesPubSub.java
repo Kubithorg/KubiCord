@@ -17,7 +17,10 @@ public class MessagesPubSub extends JedisPubSub implements Runnable {
     @Override
     public void run() {
         while (run) {
-            jedisUtils.execute(jedis -> jedis.subscribe(this, RedisKeys.COMM_PUBSUB_CHANNEL));
+            jedisUtils.execute(jedis -> {
+                jedis.select(RedisKeys.HUB_DB_ID);
+                jedis.subscribe(this, RedisKeys.COMM_PUBSUB_CHANNEL);
+            });
         }
     }
 
