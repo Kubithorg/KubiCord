@@ -42,6 +42,6 @@ public class LoadBalancing {
             roundRobin = 0;
         }
 
-        return Optional.of(hubList.size() == 0 ? null : hubList.get(roundRobin).getAsServerInfo());
+        return Optional.ofNullable(hubList.size() == 0 ? null : hubList.get(roundRobin).getAsServerInfo());
     }
 }
