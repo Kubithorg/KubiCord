@@ -1,8 +1,10 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.ServerConnectEvent;
+import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -27,5 +29,11 @@ public class PlayerAskHubEvent implements Listener {
         } else {
             event.getPlayer().disconnect(new TextComponent("Please wait..."));
         }
+    }
+
+    @EventHandler
+    public void onPlayerKickEvent(ServerKickEvent event) {
+        event.setCancelled(true);
+        event.setCancelServer(ProxyServer.getInstance().getServerInfo("CONNECT"));
     }
 }
