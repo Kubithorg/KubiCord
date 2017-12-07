@@ -2,6 +2,8 @@ package fr.pelt10.kubithon.kubicord;
 
 import fr.pelt10.kubithon.kubicord.com.CommunicationManager;
 import fr.pelt10.kubithon.kubicord.com.messages.PlayerTeleportMessage;
+import fr.pelt10.kubithon.kubicord.listener.PlayerJoin;
+import fr.pelt10.kubithon.kubicord.listener.PlayerLeave;
 import fr.pelt10.kubithon.kubicord.loadbalancing.LoadBalancing;
 import fr.pelt10.kubithon.kubicord.utils.JedisUtils;
 import lombok.Getter;
@@ -46,6 +48,9 @@ public class KubiCord extends Plugin {
             jedisUtils = new JedisUtils(this);
             communicationManager = new CommunicationManager(this);
             communicationManager.registerMessage(new PlayerTeleportMessage());
+
+            new PlayerJoin(this);
+            new PlayerLeave(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
