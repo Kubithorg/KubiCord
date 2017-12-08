@@ -4,9 +4,12 @@ import fr.pelt10.kubithon.kubicord.com.CommunicationManager;
 import fr.pelt10.kubithon.kubicord.com.messages.PlayerTeleportMessage;
 import fr.pelt10.kubithon.kubicord.listener.PlayerJoin;
 import fr.pelt10.kubithon.kubicord.listener.PlayerLeave;
+import fr.pelt10.kubithon.kubicord.listener.ProxyPing;
 import fr.pelt10.kubithon.kubicord.loadbalancing.LoadBalancing;
+import fr.pelt10.kubithon.kubicord.sync.SyncManager;
 import fr.pelt10.kubithon.kubicord.utils.JedisUtils;
 import lombok.Getter;
+import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -25,6 +28,9 @@ public class KubiCord extends Plugin {
 
     private LoadBalancing loadBalancing;
     private CommunicationManager communicationManager;
+
+    @Getter
+    private SyncManager syncManager;
 
     @Override
     public void onEnable() {
@@ -51,6 +57,9 @@ public class KubiCord extends Plugin {
 
             new PlayerJoin(this);
             new PlayerLeave(this);
+            new ProxyPing(this);
+
+            syncManager = new SyncManager(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
