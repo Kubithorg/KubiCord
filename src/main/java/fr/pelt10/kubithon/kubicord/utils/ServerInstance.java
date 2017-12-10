@@ -10,14 +10,14 @@ import java.net.InetSocketAddress;
 public class ServerInstance {
     private static Gson gson = new Gson();
     @Getter
-    private String HubID;
+    private String hubID;
     @Getter
     private String ip;
     @Getter
     private int port;
 
-    public ServerInstance(String HubID, String ip, int port) {
-        this.HubID = HubID;
+    public ServerInstance(String hubID, String ip, int port) {
+        this.hubID = hubID;
         this.ip = ip;
         this.port = port;
     }
