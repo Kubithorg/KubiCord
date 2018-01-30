@@ -6,6 +6,7 @@ import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
 import redis.clients.jedis.JedisPubSub;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -40,14 +41,14 @@ public class HubPubSub extends JedisPubSub implements Runnable {
             case RedisKeys.PUBSUB_CMD_NEW_HUB:
                 ServerInstance hubInstance = ServerInstance.deserialize(args[0]);
                 hubInstanceList.add(hubInstance);
-                logger.info("New Hub add : " + hubInstance.getHubID());
+                logger.log(Level.INFO, "New Hub add : {0}", hubInstance.getHubID());
                 break;
             case RedisKeys.PUBSUB_CMD_DELETE_HUB:
                 hubInstanceList  = hubInstanceList.stream().filter(hub -> hub.getHubID().equals(args[0])).collect(Collectors.toList());
-                logger.info("Remove Hub : " + args[0]);
+                logger.log(Level.INFO, "Remove Hub : {0}", args[0]);
                 break;
             default:
-                //TODO Log ?
+                kubiCord.getLogger().log(Level.SEVERE, "Unknow message in PUBSUB channel! ({0})", message);
                 break;
         }
     }

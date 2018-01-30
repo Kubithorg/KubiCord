@@ -1,11 +1,10 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing;
 
 import fr.pelt10.kubithon.kubicord.KubiCord;
-import fr.pelt10.kubithon.kubicord.utils.ServerInstance;
 import fr.pelt10.kubithon.kubicord.loadbalancing.hub.HubPubSub;
 import fr.pelt10.kubithon.kubicord.utils.RedisKeys;
+import fr.pelt10.kubithon.kubicord.utils.ServerInstance;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.Server;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +14,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class LoadBalancing {
-    private static List<ServerInstance> hubList = new LinkedList<>();
-    private static int roundRobin = 0;
-    private static HubPubSub hubPubSub;
+    private List<ServerInstance> hubList = new LinkedList<>();
+    private int roundRobin = 0;
+    private HubPubSub hubPubSub;
 
     public LoadBalancing(KubiCord kubiCord) {
         Logger logger = kubiCord.getLogger();
@@ -32,7 +31,7 @@ public class LoadBalancing {
             });
         });
 
-        if(hubPubSub == null) {
+        if (hubPubSub == null) {
             hubPubSub = new HubPubSub(kubiCord, hubList);
             new Thread(hubPubSub).start();
         }
@@ -42,7 +41,7 @@ public class LoadBalancing {
 
     public Optional<ServerInfo> nextHub(String exludeServer) {
         List<ServerInstance> tempHubList = hubList.stream().filter(serverInstance -> !serverInstance.getHubID().equals(exludeServer)).collect(Collectors.toList());
-        if(tempHubList.size() > 0) {
+        if (!tempHubList.isEmpty()) {
             return Optional.of(tempHubList.get(new Random().nextInt(tempHubList.size())).getAsServerInfo());
         }
         return Optional.empty();
@@ -50,10 +49,10 @@ public class LoadBalancing {
 
     public Optional<ServerInfo> nextHub() {
         roundRobin++;
-        if(roundRobin >= hubList.size()) {
+        if (roundRobin >= hubList.size()) {
             roundRobin = 0;
         }
 
-        return Optional.ofNullable(hubList.size() == 0 ? null : hubList.get(roundRobin).getAsServerInfo());
+        return Optional.ofNullable(hubList.isEmpty() ? null : hubList.get(roundRobin).getAsServerInfo());
     }
 }

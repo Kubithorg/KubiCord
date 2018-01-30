@@ -15,7 +15,7 @@ public class ProxyPing implements Listener {
     }
 
     @EventHandler
-    public void ProxyPingEvent(ProxyPingEvent event) {
+    public void proxyPingEvent(ProxyPingEvent event) {
         ServerPing serverPing = event.getResponse();
 
         ServerPing.Players players = serverPing.getPlayers();

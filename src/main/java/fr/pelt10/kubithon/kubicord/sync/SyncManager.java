@@ -15,12 +15,12 @@ public class SyncManager {
     private int maxPlayer = 0;
 
     public SyncManager(KubiCord kubiCord) {
-        kubiCord.getProxy().getScheduler().schedule(kubiCord, () -> {
+        kubiCord.getProxy().getScheduler().schedule(kubiCord, () ->
             kubiCord.getJedisUtils().execute(jedis -> {
                 jedis.select(RedisKeys.BUNGEECORD_DB_ID);
                 onlinePlayer = jedis.scard(RedisKeys.BUNGEECORD_PLAYERLIST).intValue();
                 maxPlayer = onlinePlayer + (100 - (onlinePlayer%100));
-            });
-        }, 0, 10, TimeUnit.SECONDS);
+            })
+        , 0, 10, TimeUnit.SECONDS);
     }
 }

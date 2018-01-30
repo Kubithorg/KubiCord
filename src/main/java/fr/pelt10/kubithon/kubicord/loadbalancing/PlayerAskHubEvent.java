@@ -1,6 +1,5 @@
 package fr.pelt10.kubithon.kubicord.loadbalancing;
 
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -14,6 +13,9 @@ import java.util.Optional;
 
 public class PlayerAskHubEvent implements Listener {
     private LoadBalancing loadBalancing;
+    private static final BaseComponent[] NO_HUB_KICK= Arrays.asList(new TextComponent("Aucun lobby disponible")).toArray(new BaseComponent[0]);
+    private static final TextComponent PLEASE_WAIT = new TextComponent("Please wait...");
+
 
     public PlayerAskHubEvent(LoadBalancing loadBalancing) {
         this.loadBalancing = loadBalancing;
@@ -21,26 +23,26 @@ public class PlayerAskHubEvent implements Listener {
 
     @EventHandler
     public void onPlayerConnectEvent(ServerConnectEvent event) {
-        if(!event.getTarget().getName().equals("CONNECT")) {
+        if (!event.getTarget().getName().equals("CONNECT")) {
             return;
         }
 
         Optional<ServerInfo> serverInfo = loadBalancing.nextHub();
-        if(serverInfo.isPresent()) {
+        if (serverInfo.isPresent()) {
             event.setTarget(serverInfo.get());
         } else {
-            event.getPlayer().disconnect(new TextComponent("Please wait..."));
+            event.getPlayer().disconnect(PLEASE_WAIT);
         }
     }
 
     @EventHandler
     public void onPlayerKickEvent(ServerKickEvent event) {
         Optional<ServerInfo> serverInfo = loadBalancing.nextHub(event.getKickedFrom().getName());
-        if(serverInfo.isPresent()) {
+        if (serverInfo.isPresent()) {
             event.setCancelled(true);
             event.setCancelServer(serverInfo.get());
         } else {
-            event.setKickReasonComponent((BaseComponent[]) Arrays.asList(new TextComponent("Aucun lobby disponible")).toArray());
+            event.setKickReasonComponent(NO_HUB_KICK);
         }
     }
 }

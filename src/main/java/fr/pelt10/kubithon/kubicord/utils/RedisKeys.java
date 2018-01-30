@@ -1,6 +1,8 @@
 package fr.pelt10.kubithon.kubicord.utils;
 
 public class RedisKeys {
+    private RedisKeys() { }
+
     public static final int HUB_DB_ID = 1;
     public static final String HUB_KEY_NAME = "HUB";
 
